@@ -20,15 +20,15 @@ class RoleSeeder extends Seeder
             ],
             [
                 'role_name' => 'chasier',
-                'description' => 'Regular user with limited access',
+                'description' => 'cashier',
             ],
             [
                 'role_name' => 'capster',
-                'description' => 'Regular user with limited access',
+                'description' => 'capster',
             ],
             [
                 'role_name' => 'customer',
-                'description' => 'Regular user with limited access',
+                'description' => 'customer',
             ],
         ];
 
