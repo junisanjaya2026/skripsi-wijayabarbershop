@@ -3,9 +3,9 @@
 @section('content')
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5" style="background: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;">
-    <h1 class="text-center text-white display-6">Layanan Wijaya Barber</h1>
+    <h1 class="text-center text-white display-6">Keranjang</h1>
     <ol class="breadcrumb justify-content-center mb-0">
-        <li class="breadcrumb-item active text-primary">Pilih layanan grooming favorit Anda</li>
+        <li class="breadcrumb-item active text-primary">Keranjang anda</li>
     </ol>
 </div>
 <!-- Single Page Header End -->
@@ -79,7 +79,7 @@
         </div>
 
         @php
-            $tax = round($subtotal * 0.10);
+            $tax = round($subtotal * 0.1);
             $total = $subtotal + $tax;
         @endphp
 

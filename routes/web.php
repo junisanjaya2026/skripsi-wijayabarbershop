@@ -15,6 +15,6 @@ Route::post('/update-cart', [MenuController::class, 'updateCart'])->name('update
 Route::post('/remove-from-cart', [MenuController::class, 'removeFromCart'])->name('remove.from.cart');
 Route::get('/clear-cart', [MenuController::class, 'clearCart'])->name('clear.cart');
 
-Route::get('/checkout', function () {
-    return view('customer.checkout');
-})->name('checkout');
+Route::get('/checkout', [MenuController::class, 'checkout'])->name('checkout');
+Route::post('/checkout/store', [MenuController::class, 'storeOrder'])->name('checkout.store');
+Route::get('/order/success/{orderId}', [MenuController::class, 'orderSuccess'])->name('order.success');
