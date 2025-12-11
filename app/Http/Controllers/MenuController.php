@@ -206,9 +206,49 @@ class MenuController extends Controller
             }
 
         Session::forget('cart');
+        
 
-        return redirect()->route('order.success',['orderId'=>$order->order_code])->with('success', 'Pesanan Anda telah berhasil diproses. Terima kasih!');
+        if($request->payment_method == 'tunai'){
+            return redirect()->route('order.success',['orderId'=>$order->order_code])->with('success', 'Pesanan Anda telah berhasil diproses. Terima kasih!');
+        }else{
+            // Midtrans QRIS payment process
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            \Midtrans\Config::$isProduction = config('midtrans.is_production');
+            \Midtrans\Config::$isSanitized = true;
+            \Midtrans\Config::$is3ds = true;
+
+            $params = [
+                
+                'transaction_details' => [
+                    'order_id' => $order->order_code,
+                    'gross_amount' => (int) $order->grand_total,
+                ],
+                
+                'customer_details' =>[
+                    'first_name' => $user->fullname ?? 'Customer',
+                    'phone' => $user->phone,
+                ],
+                'payment_type' => 'qris',
+                
+            ];
+
+            try {
+                $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+                return response()->json([
+                    'status' => 'success',
+                    'snap_token' => $snapToken,
+                    'order_id' => $order->order_code,
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Gagal membuat pesanan, silahkan coba lagi. Error: ' . $e->getMessage(),
+                ]);
+                // return redirect()->route('checkout')->with('error', 'Terjadi kesalahan saat memproses pembayaran: ' . $e->getMessage());
+        }
     }
+}
 
     public function orderSuccess($orderId)
     {
@@ -221,7 +261,7 @@ class MenuController extends Controller
 
       $orderItems = OrderItem::where('order_id', $order->id)->get();
       
-      if($order->payment_mehtod == 'qris'){
+      if($order->payment_method == 'qris'){
         $order->status = 'settlement';
         $order->save();
       }

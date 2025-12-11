@@ -81,9 +81,9 @@
                                                     </div>
                                                 </th>
                                                 <td class="py-5">{{ $item['item_name'] }}</td>
-                                                <td class="py-5">Rp{{ number_format($item['price'], 0, ',', '.') }},00</td>
+                                                <td class="py-5">Rp{{ number_format($item['price'], 0, ',', '.') }}</td>
                                                 <td class="py-5">{{ $item['qty'] }}</td>
-                                                <td class="py-5">Rp{{ number_format($lineTotal, 0, ',', '.') }},00</td>
+                                                <td class="py-5">Rp{{ number_format($lineTotal, 0, ',', '.') }}</td>
                                             </tr>
                                                 
                                             @endforeach
@@ -104,18 +104,18 @@
                                             <h3 class="display-6 mb-4">Total <span class="fw-normal">Pesanan</span></h3>
                                             <div class="d-flex justify-content-between mb-4">
                                                 <h5 class="mb-0 me-4">Subtotal</h5>
-                                                <p class="mb-0">Rp{{ number_format($subtotal,0,',','.') }},00</p>
+                                                <p class="mb-0">Rp{{ number_format($subtotal,0,',','.') }}</p>
                                             </div>
                                             <div class="d-flex justify-content-between">
                                                 <p class="mb-0 me-4">Pajak (10%)</p>
                                                 <div class="">
-                                                    <p class="mb-0">Rp{{ number_format($tax,0,',','.') }},00</p>
+                                                    <p class="mb-0">Rp{{ number_format($tax,0,',','.') }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                                             <h4 class="mb-0 ps-4 me-4">Total</h4>
-                                            <h5 class="mb-0 pe-4">Rp{{ number_format($total,0,',','.') }},00</h5>
+                                            <h5 class="mb-0 pe-4">Rp{{ number_format($total,0,',','.') }}</h5>
                                         </div>
 
                                         <div class="py-4 mb-4 d-flex justify-content-between">
@@ -134,7 +134,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn border-secondary py-3 text-uppercase text-primary">Konfirmasi Pesanan</button> 
+                                        <button type="button"  id="pay-button" class="btn border-secondary py-3 text-uppercase text-primary">Konfirmasi Pesanan</button> 
                                     </div>
                                     
                                 </div>
@@ -144,5 +144,59 @@
                 </form>
             </div>
         </div>
+ <script
+		src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="{{ENV('MIDTRANS_CLIENT_KEY') }}">
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const payButton = document.getElementById('pay-button');
+        const form = document.querySelector('form');
+
+        payButton.addEventListener('click', function (e) {
+            let paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+            if (!paymentMethod) {
+                alert('Silakan pilih metode pembayaran.');
+                return;
+            }
+
+            paymentMethod = paymentMethod.value;
+            let formData = new FormData(form);
+
+            if (paymentMethod === 'tunai') {
+                form.submit();
+            } else if (paymentMethod === 'qris') {
+                fetch('{{ route('checkout.store') }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {"X-CSRF-TOKEN": '{{ csrf_token() }}'}
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.snap_token) {
+                        snap.pay(data.snap_token, {
+                            onSuccess: function(result){
+                                window.location.href = '/order/success/' + data.order_code;
+                            },
+                            onPending: function(result){
+                                alert("menunggu pembayaran.");
+                            },
+                            onError: function(result){
+                                alert("Pembayaran gagal. Silakan coba lagi.");
+                            }
+                        });
+                    } else {
+                        alert('Terjadi kesalahan. Silakan coba lagi.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan jaringan. Silakan coba lagi.');
+                });
+            }
+        });
+    });
+</script>
+
 
 @endsection
