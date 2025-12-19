@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title','Tambah Item')
+@section('title','Tambah Kategori')
 
 @section('content')
 <div class="card">
