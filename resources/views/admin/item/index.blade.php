@@ -1,6 +1,6 @@
 @extends('admin.layouts.master')
 
-@section('title','Categories')
+@section('title','Items')
 
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/admin/extensions/simple-datatables/style.css') }}">

@@ -21,7 +21,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+    return view('admin.category.create');
     }
 
     /**
@@ -29,7 +29,18 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+        'category_name'   => 'required|string',
+        'description'       => 'required|string',
+    ]);
+
+    Category::create([
+        'category_name'   => $request->category_name,
+        'description' => $request->description,
+    ]);
+
+    return redirect()->route('admin.category.index')
+        ->with('success', 'Kategori berhasil ditambahkan');
     }
 
     /**
@@ -45,7 +56,10 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+          $category = Category::findOrFail($id);
+            // $categories = Category::all();
+
+    return view('admin.category.edit', compact('category'));
     }
 
     /**
@@ -53,7 +67,22 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+       $category = Category::findOrFail($id);
+
+    $request->validate([
+        'category_name'   => 'required|string',
+        'description'       => 'required|string',
+    ]);
+
+
+    // Update data lainnya
+    $category->update([
+        'category_name'   => $request->category_name,
+        'description' => $request->description
+    ]);
+
+    return redirect()->route('admin.category.index')
+        ->with('success', 'Kategori berhasil diperbarui');
     }
 
     /**
@@ -61,6 +90,13 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+            $category = Category::findOrFail($id);
+
+
+    // Hapus data item
+    $category->delete();
+
+    return redirect()->route('admin.category.index')
+        ->with('success', 'kategori berhasil dihapus');
     }
 }
