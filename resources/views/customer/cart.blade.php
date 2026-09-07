@@ -45,7 +45,7 @@
                         <tr data-id="{{ $id }}">
                             <td style="width:100px;">
                                 @if(!empty($item['image']))
-                                    <img src="{{ asset($item['image']) }}" class="img-fluid rounded-circle" style="width:80px;height:80px;object-fit:cover;" alt="{{ $item['item_name'] }}">
+                                    <img src="{{ Storage::url($item['image']) }}" class="img-fluid rounded-circle" style="width:80px;height:80px;object-fit:cover;" alt="{{ $item['item_name'] }}">
                                 @else
                                     <img src="https://via.placeholder.com/80" class="img-fluid rounded-circle" style="width:80px;height:80px;object-fit:cover;" alt="{{ $item['item_name'] }}">
                                 @endif

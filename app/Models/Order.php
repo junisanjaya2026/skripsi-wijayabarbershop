@@ -23,6 +23,10 @@ class Order extends Model
         'notes',
         'created_at',
         'updated_at',
+
+          // queue
+        'queue_number',
+        'queue_time',
     ];
 
     protected $dates = ['deleted_at'];

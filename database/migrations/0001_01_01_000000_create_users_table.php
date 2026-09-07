@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('username')->nullable();
             $table->string('password')->nullable();
-            $table->string('fullname');
+            $table->string('fullname')->nullable();
             $table->string('email')->nullable();
-            $table->string('phone');
-            $table->unsignedBigInteger('role_id');
+            $table->string('phone')->nullable();
+            $table->boolean('on_duty')->default(0);
+            $table->unsignedBigInteger('role_id')->default(4); // default ke role customer
             $table->softDeletes();
             $table->timestamps();
 

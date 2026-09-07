@@ -28,7 +28,76 @@
         <button class="nav-btn" data-index="1" aria-label="Tampilkan slide 2"></button>
         <button class="nav-btn" data-index="2" aria-label="Tampilkan slide 3"></button>
     </div>
+
+
+    
+<!-- Video Widget Start -->
+<div class="modal video-widget-modal" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true" data-bs-backdrop="false">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg rounded-3 overflow-hidden">
+            <div class="modal-header border-0 py-1 px-2 bg-primary">
+                <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="ratio ratio-16x9">
+                    <iframe
+                        id="videoModalIframe"
+                        src=""
+                        title="Video"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                    ></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Video Widget End -->
+
+<style>
+    /* Widget video mengambang di pojok kanan bawah, tidak menutupi seluruh layar */
+    .video-widget-modal {
+        background: transparent;
+        pointer-events: none; /* biar area kosong di belakang tetap bisa diklik */
+    }
+
+    .video-widget-modal .modal-dialog {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        margin: 0;
+        width: 720px;
+        max-width: calc(100vw - 40px);
+        pointer-events: auto; /* widget-nya sendiri tetap bisa diklik */
+    }
+
+    /* --- Sembunyikan tombol close secara default --- */
+    .video-widget-modal .btn-close {
+        opacity: 0;
+        transition: opacity 0.25s ease-in-out;
+    }
+
+    /* --- Tampilkan tombol close saat modal di-hover --- */
+    .video-widget-modal .modal-content:hover .btn-close {
+        opacity: 0.8; /* Nilai transparansi saat di-hover (bisa diubah ke 1 untuk full transparan ke padat) */
+    }
+
+    /* Tampilkan penuh saat tombol close itu sendiri di-hover */
+    .video-widget-modal .btn-close:hover {
+        opacity: 1;
+    }
+
+    @media (max-width: 480px) {
+        .video-widget-modal .modal-dialog {
+            width: calc(100vw - 24px);
+            right: 12px;
+            bottom: 12px;
+        }
+    }
+</style>
 </section>
+
+
 
 <!-- Services Section -->
 <section id="services" class="services">

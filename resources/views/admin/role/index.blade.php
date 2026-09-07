@@ -21,7 +21,7 @@
                 @endif
                 {{-- <p class="text-subtitle text-muted">A sortable, searchable, paginated table without dependencies thanks to simple-datatables.</p> --}}
             </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
+            <div class="col-12 col-md-6 order-md-2 order-first mb-4">
                <a href="{{ route('roles.create') }}" class="btn btn-primary float-start float-lg-end">
                {{-- <a href="#" class="btn btn-primary float-start float-lg-end"> --}}
                 <i class="bi bi-plus" >Tambah Roles</i>

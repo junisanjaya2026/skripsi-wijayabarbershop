@@ -63,4 +63,19 @@ class UserController extends Controller
     {
         //
     }
+
+  public function updateOnDuty(Request $request, User $user)
+{
+    // Cegah selain capster
+    if ($user->role->role_name !== 'capster') {
+        abort(403, 'Hanya capster yang bisa diubah');
+    }
+
+    // Update status
+    $user->on_duty = $request->has('on_duty') ? 1 : 0;
+    $user->save();
+
+    return back()->with('success', 'Status on duty berhasil diubah');
+}
+
 }
